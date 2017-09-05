@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>A cube</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		img {
+			width: 300px;
+			height: 300px;
+			opacity: 0;
+			animation: imgAnimate 3s 5s infinite alternate forwards;
+		}
+
+		@keyframes imgAnimate {
+			0% {
+				opacity: 0;
+				-webkit-transform: translateZ(151px);
+				transform: translateZ(151px);
+			}
+			100% {
+				opacity: 1;
+				-webkit-transform: translateZ(151px);
+				transform: translateZ(151px);
+			}
+		}
+
+		.cube {
+			width: 300px;
+			height: 300px;
+			margin: 200px auto;
+			position: relative;
+			-webkit-transform-style: preserve-3d;
+			transform-style: preserve-3d;
+			-webkit-transform: rotateX(15deg) rotateY(15deg);
+			transform: rotateX(15deg) rotateY(15deg);
+			animation: start 3s 2s linear infinite forwards alternate;
+		}
+
+		@keyframes start {
+			0% {
+				-webkit-transform: rotateX(15deg) rotateY(15deg);
+				transform: rotateX(15deg) rotateY(15deg);
+			}
+			100% {
+				-webkit-transform: rotateX(360deg) rotateY(360deg);
+				transform: rotateX(360deg) rotateY(360deg);
+			}
+		}
+
+		.cube>div {
+			width: 100%;
+			height: 100%;
+			opacity: 0.5;
+			position: absolute;
+		}
+
+		.top {
+			transform-origin: top;
+			-webkit-transform: translateZ(150px) rotateX(-90deg);
+			transform: translateZ(150px) rotateX(-90deg);
+			animation: top 3s 5s infinite alternate forwards;
+		}
+
+		@keyframes top {
+			0% {
+				-webkit-transform: translateZ(150px) rotateX(-90deg);
+				transform: translateZ(150px) rotateX(-90deg);
+			}
+			100% {
+				-webkit-transform: translateZ(150px) rotateX(-180deg);
+				transform: translateZ(150px) rotateX(-180deg);
+			}
+		}
+
+		.bottom {
+			transform-origin: top;
+			-webkit-transform: translateY(300px) translateZ(150px) rotateX(-90deg);
+			transform: translateY(300px) translateZ(150px) rotateX(-90deg);
+			animation: bottom 3s 5s infinite alternate forwards;
+		}
+
+		@keyframes bottom {
+			0% {
+				-webkit-transform: translateY(300px) translateZ(150px) rotateX(-90deg);
+				transform: translateY(300px) translateZ(150px) rotateX(-90deg);
+			}
+			100% {
+				-webkit-transform: translateY(300px) translateZ(150px) rotateX(0deg);
+				transform: translateY(300px) translateZ(150px) rotateX(0deg);
+			}
+		}
+
+		.left {
+			transform-origin: left;
+			-webkit-transform: translateZ(150px) rotateY(90deg);
+			transform: translateZ(150px) rotateY(90deg);
+			animation: left 3s 5s infinite alternate forwards;
+		}
+
+		@keyframes left {
+			0% {
+				-webkit-transform: translateZ(150px) rotateY(90deg);
+				transform: translateZ(150px) rotateY(90deg);
+			}
+			100% {
+				-webkit-transform: translateZ(150px) rotateY(180deg);
+				transform: translateZ(150px) rotateY(180deg);
+			}
+		}
+
+		.right {
+			transform-origin: right;
+			animation: right 3s 5s infinite alternate forwards;
+			-webkit-transform: translateZ(150px) rotateY(-90deg);
+			transform: translateZ(150px) rotateY(-90deg);
+		}
+
+		@keyframes right {
+			0% {
+				-webkit-transform: translateZ(150px) rotateY(-90deg);
+				transform: translateZ(150px) rotateY(-90deg);
+			}
+			100% {
+				-webkit-transform: translateZ(150px) rotateY(-180deg);
+				transform: translateZ(150px) rotateY(-180deg);
+			}
+		}
+
+		.front {
+			transform-origin: top;
+			-webkit-transform: translateZ(-150px);
+			transform: translateZ(-150px);
+			animation: front 3s 5s infinite alternate forwards;
+		}
+
+		@keyframes front {
+			0% {
+				-webkit-transform: translateZ(-150px) translateY(0) rotateX(0);
+				transform: translateZ(-150px) translateY(0) rotateX(0);
+			}
+			100% {
+				-webkit-transform: translateZ(150px) translateY(900px) rotateX(-180deg);
+				transform: translateZ(150px) translateY(900px) rotateX(-180deg);
+			}
+		}
+
+		.behind {
+			-webkit-transform: translateZ(150px);
+			transform: translateZ(150px);
+		}
+
+		li {
+			float: left;
+			width: 100px;
+			height: 100px;
+			list-style: none;
+			border: 1px solid #fff;
+			/* 这里相对定位，相对于自己偏离位置，使用运动函数归位的时候，直接使用left:0，top:0 */
+			position: relative;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="cube">
+		<div class="top"></div>
+		<div class="bottom"></div>
+		<div class="left"></div>
+		<div class="right"></div>
+		<div class="front"></div>
+		<div class="behind"></div>
+		<img src="huaji.jpg" alt="">
+	</div>
+
+	<script src="jquery.js"></script>
+	<script>
+		$(function () {
+			let cube = $('div')
+			let divs = cube.children()
+			let colorArr = ['hotpink', 'orange', 'yellowgreen', 'yellow', 'skyblue', 'red'];
+			let positionArr = []
+			for (let i = 0; i < 54; i++) {
+				positionArr.push(parseInt(Math.random() * 360))
+			}
+			//创建ul，分别放进魔方六个面
+			divs.each(function (index, item) {
+				let ulObj = $('<ul></ul>')
+				ulObj.appendTo($(item))
+				for (let i = 0; i < 9; i++) {
+					let liObj = $('<li></li>')
+					liObj.css('backgroundColor', colorArr[index])
+					ulObj.append(liObj)
+				}
+			})
+
+			//随机分配li的位置
+			let lis = $('li')
+			lis.each(function (index, item) {
+				$(item).css({
+					'left': positionArr[index],
+					'top': positionArr[index]
+				}).animate({
+					'left': 0,
+					"top": 0
+				}, 2000)
+			})
+		})
+	</script>
+</body>
+
+</html>
